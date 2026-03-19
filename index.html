@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Post Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 5px;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0;
+            background: white;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 160px;
+            gap: 5px;
+            padding: 5px;
+            width: 100%;
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            gap: 4px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 0.65em;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+
+        .stat-card .value {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .top-5-panel {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 10px;
+            border-left: 4px solid #667eea;
+            display: none !important;
+        }
+
+        .top-5-panel h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .top-5-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .top-5-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .top-5-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .top-5-stats {
+            font-size: 0.85em;
+            color: #666;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+
+        .bundle-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 0;
+            display: none !important;
+        }
+
+        .bundle-section h3 {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .bundle-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bundle-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .bundle-price {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .bundle-btn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: #f5576c;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .bundle-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .filters-section {
+            background: #f8f9ff;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            display: block !important;
+        }
+
+        .filters-section h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .filter-group {
+            margin-bottom: 6px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+            font-size: 0.75em;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+
+        .filter-group select {
+            cursor: pointer;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .filter-buttons button {
+            flex: 1;
+            padding: 6px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8em;
+            transition: 0.3s;
+        }
+
+        .apply-filter {
+            background: #667eea;
+            color: white;
+        }
+
+        .apply-filter:hover {
+            background: #5568d3;
+        }
+
+        .clear-filter {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .clear-filter:hover {
+            background: #d0d0d0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 0;
+            border: 1px solid #e0e0e0;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .marketplace-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            table-layout: auto;
+        }
+
+        .marketplace-table thead {
+            background: #667eea;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .marketplace-table th {
+            padding: 10px 6px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85em;
+            white-space: nowrap;
+        }
+
+        .marketplace-table td {
+            padding: 10px 6px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        .marketplace-table tbody tr {
+            transition: 0.3s;
+        }
+
+        .marketplace-table tbody tr:hover {
+            background: #f8f9ff;
+        }
+
+        .marketplace-table tbody tr.high-da {
+            background: #fffbea;
+            border-left: 4px solid #ffc107;
+        }
+
+        .marketplace-table tbody tr.high-da:hover {
+            background: #fff8d6;
+        }
+
+        .website-name {
+            font-weight: 600;
+            color: #667eea;
+            cursor: pointer;
+            word-break: break-word;
+        }
+
+        .website-name:hover {
+            text-decoration: underline;
+        }
+
+        .metric {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .metric.low {
+            color: #d32f2f;
+        }
+
+        .metric.medium {
+            color: #f57c00;
+        }
+
+        .metric.high {
+            color: #388e3c;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #388e3c;
+            font-size: 1.05em;
+        }
+
+        .quantity-input {
+            width: 45px;
+            padding: 3px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 0.75em;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 2px;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+
+        .cart-btn, .whatsapp-btn {
+            padding: 4px 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.7em;
+            transition: 0.3s;
+            white-space: nowrap;
+            min-width: 35px;
+        }
+
+        .cart-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .cart-btn:hover {
+            background: #5568d3;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+        }
+
+        .whatsapp-btn:hover {
+            background: #1fa354;
+        }
+
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cart-panel {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 10px;
+            border-left: 4px solid #667eea;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .cart-panel h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border-left: 3px solid #667eea;
+            font-size: 0.9em;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .cart-item-price {
+            color: #388e3c;
+            font-weight: 600;
+        }
+
+        .cart-item-remove {
+            color: #d32f2f;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        .cart-summary {
+            border-top: 2px solid #e0e0e0;
+            padding-top: 15px;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .checkout-btn, .cart-whatsapp-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 8px;
+        }
+
+        .checkout-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .checkout-btn:hover {
+            background: #5568d3;
+        }
+
+        .checkout-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .cart-whatsapp-btn {
+            background: #25d366;
+            color: white;
+        }
+
+        .cart-whatsapp-btn:hover {
+            background: #1fa354;
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: #999;
+            padding: 20px 0;
+        }
+
+        .analytics-panel {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .analytics-panel h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .analytics-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .analytics-item:last-child {
+            border-bottom: none;
+        }
+
+        .analytics-label {
+            color: #666;
+        }
+
+        .analytics-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #d32f2f;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px;
+            border-left: 4px solid #d32f2f;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #388e3c;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-panel {
+                position: static;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .marketplace-table {
+                font-size: 0.75em;
+            }
+
+            .marketplace-table th,
+            .marketplace-table td {
+                padding: 6px 4px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .cart-btn, .whatsapp-btn {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .marketplace-table {
+                font-size: 0.7em;
+            }
+
+            .marketplace-table th,
+            .marketplace-table td {
+                padding: 5px 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Guest Post Marketplace</h1>
+            <p>Find premium guest posting opportunities for backlinks</p>
+        </header>
+
+        <div class="main-content">
+            <div class="left-section">
+                <!-- Dashboard Stats -->
+                <div class="dashboard" id="dashboard">
+                    <div class="stat-card">
+                        <h3>Total Websites</h3>
+                        <div class="value" id="totalCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Average DA</h3>
+                        <div class="value" id="avgDA">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Average Traffic</h3>
+                        <div class="value" id="avgTraffic">0K</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total in Cart</h3>
+                        <div class="value" id="cartCount">0</div>
+                    </div>
+                </div>
+
+                <!-- Top 5 & Bundle Panel -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; display: none;">
+                    <div>
+                        <div class="top-5-panel">
+                            <h3>⭐ Top 5 by DA</h3>
+                            <div id="top5Panel"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bundle-section">
+                            <h3>📦 Recommended Bundle</h3>
+                            <div class="bundle-items" id="bundleItems"></div>
+                            <div class="bundle-price">
+                                Total: <span id="bundlePrice">$0.00</span>
+                            </div>
+                            <button class="bundle-btn" onclick="addBundleToCart()">📦 Add Entire Bundle</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-section">
+                    <h3>🔍 Advanced Filters</h3>
+                    <div class="filter-group">
+                        <label>Search Website</label>
+                        <input type="text" id="searchFilter" placeholder="Search by website name...">
+                    </div>
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <select id="categoryFilter">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>DA Range</label>
+                        <input type="number" id="minDA" placeholder="Min DA" min="0" max="100">
+                        <input type="number" id="maxDA" placeholder="Max DA" min="0" max="100" style="margin-top: 8px;">
+                    </div>
+                    <div class="filter-group">
+                        <label>Price Range ($)</label>
+                        <input type="number" id="minPrice" placeholder="Min Price" min="0" step="0.01">
+                        <input type="number" id="maxPrice" placeholder="Max Price" min="0" step="0.01" style="margin-top: 8px;">
+                    </div>
+                    <div class="filter-group">
+                        <label>Link Type</label>
+                        <select id="linkTypeFilter">
+                            <option value="">All Link Types</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select id="sortBy" onchange="applySorting()">
+                            <option value="">-- No Sorting --</option>
+                            <option value="da-asc">DA (Low to High)</option>
+                            <option value="da-desc">DA (High to Low)</option>
+                            <option value="dr-asc">DR (Low to High)</option>
+                            <option value="dr-desc">DR (High to Low)</option>
+                            <option value="traffic-asc">Traffic (Low to High)</option>
+                            <option value="traffic-desc">Traffic (High to Low)</option>
+                            <option value="price-asc">Price (Low to High)</option>
+                            <option value="price-desc">Price (High to Low)</option>
+                        </select>
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="apply-filter" onclick="applyFilters()">Apply Filters</button>
+                        <button class="clear-filter" onclick="clearFilters()">Clear</button>
+                    </div>
+                </div>
+
+                <!-- Marketplace Table -->
+                <div>
+                    <h3 style="margin-bottom: 15px; color: #333;">Marketplace Table</h3>
+                    <div class="table-wrapper">
+                        <table class="marketplace-table" id="marketplaceTable">
+                            <thead>
+                                <tr>
+                                    <th>Website Name</th>
+                                    <th>Category</th>
+                                    <th>DA</th>
+                                    <th>DR</th>
+                                    <th>Spam Score</th>
+                                    <th>Domain Age</th>
+                                    <th>Traffic</th>
+                                    <th>Price</th>
+                                    <th>Link Type</th>
+                                    <th>Turnaround</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td colspan="12" class="loading">Loading marketplace data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-sidebar">
+                <!-- Shopping Cart -->
+                <div class="cart-panel">
+                    <h3>🛒 <span id="cartHeader">Cart: 0 items</span></h3>
+                    <div class="cart-items" id="cartItems">
+                        <div class="cart-empty">Cart is empty</div>
+                    </div>
+                    <div class="cart-summary">
+                        <div class="cart-total">
+                            <span>Total:</span>
+                            <span id="cartTotal">$0.00</span>
+                        </div>
+                        <button class="checkout-btn" id="checkoutBtn" disabled onclick="checkout()">Checkout</button>
+                        <button class="cart-whatsapp-btn" id="cartWhatsappBtn" onclick="sendCartViaWhatsApp()" style="display: none;">📱 Order via WhatsApp</button>
+                    </div>
+                </div>
+
+                <!-- Analytics -->
+                <div class="analytics-panel">
+                    <h3>📊 Analytics</h3>
+                    <div class="analytics-item">
+                        <span class="analytics-label">Most Added Sites:</span>
+                    </div>
+                    <div style="font-size: 0.8em; color: #667eea; margin-bottom: 15px; padding: 8px; background: rgba(102, 126, 234, 0.1); border-radius: 4px;" id="mostAddedSites">None yet</div>
+                    <div class="analytics-item">
+                        <span class="analytics-label">Bundles Added:</span>
+                        <span class="analytics-value" id="bundleAddedCount">0</span>
+                    </div>
+                    <div class="analytics-item">
+                        <span class="analytics-label">Total Orders:</span>
+                        <span class="analytics-value" id="totalOrdersCount">0</span>
+                    </div>
+                    <div class="analytics-item">
+                        <span class="analytics-label">Total Value:</span>
+                        <span class="analytics-value" id="totalValueAmount">$0.00</span>
+                    </div>
+                    <div class="analytics-item">
+                        <span class="analytics-label">High DA (≥50):</span>
+                        <span class="analytics-value" id="highDACount">0</span>
+                    </div>
+                    <div class="analytics-item">
+                        <span class="analytics-label">Avg Price:</span>
+                        <span class="analytics-value" id="avgPrice">$0.00</span>
+                    </div>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e0e0e0;">
+                        <button onclick="resetAnalytics()" style="width: 100%; padding: 10px; background: #ff6b6b; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85em;">🔄 Reset Analytics</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let allData = [];
+        let filteredData = [];
+        let cart = [];
+        // Corrected Google Sheets API URL
+        const SHEET_URL = 'https://opensheet.elk.sh/15EOr_d6z1U_Lc3xkTPnuzuMnSJLNv6F8D86y5daNC_Q/VENDORS';
+
+        // Analytics storage functions
+        function initAnalyticsStorage() {
+            const existing = localStorage.getItem('gpmAnalytics');
+            if (!existing) {
+                const defaultAnalytics = {
+                    topAdded: {}, // {website_name: count}
+                    bundleCount: 0,
+                    totalAdditions: 0,
+                    totalValue: 0
+                };
+                localStorage.setItem('gpmAnalytics', JSON.stringify(defaultAnalytics));
+            }
+        }
+
+        function getAnalyticsData() {
+            const data = localStorage.getItem('gpmAnalytics');
+            return data ? JSON.parse(data) : { topAdded: {}, bundleCount: 0, totalAdditions: 0, totalValue: 0 };
+        }
+
+        function trackAddition(websiteName, value) {
+            const analytics = getAnalyticsData();
+            
+            // Track top added sites
+            if (!analytics.topAdded[websiteName]) {
+                analytics.topAdded[websiteName] = 0;
+            }
+            analytics.topAdded[websiteName]++;
+            
+            // Track totals
+            analytics.totalAdditions++;
+            analytics.totalValue += value;
+            
+            localStorage.setItem('gpmAnalytics', JSON.stringify(analytics));
+            loadAnalyticsFromStorage();
+        }
+
+        function trackBundleAddition(value) {
+            const analytics = getAnalyticsData();
+            analytics.bundleCount++;
+            analytics.totalAdditions++;
+            analytics.totalValue += value;
+            
+            localStorage.setItem('gpmAnalytics', JSON.stringify(analytics));
+            loadAnalyticsFromStorage();
+        }
+
+        function loadAnalyticsFromStorage() {
+            const analytics = getAnalyticsData();
+            
+            // Get top 5 added sites
+            const topAdded = Object.entries(analytics.topAdded)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([name, count]) => `${name}: ${count}`)
+                .join('<br/>');
+            
+            const mostAddedSites = document.getElementById('mostAddedSites');
+            if (mostAddedSites) {
+                mostAddedSites.innerHTML = topAdded || 'None yet';
+            }
+            
+            safeUpdate('bundleAddedCount', 'textContent', analytics.bundleCount);
+            safeUpdate('totalOrdersCount', 'textContent', analytics.totalAdditions);
+            safeUpdate('totalValueAmount', 'textContent', formatPrice(analytics.totalValue));
+        }
+
+        function resetAnalytics() {
+            if (confirm('Are you sure you want to reset all analytics? This cannot be undone.')) {
+                localStorage.removeItem('gpmAnalytics');
+                initAnalyticsStorage();
+                loadAnalyticsFromStorage();
+                alert('Analytics reset successfully!');
+            }
+        }
+
+        // Utility function to format traffic
+        function formatTraffic(traffic) {
+            if (!traffic || traffic === 'N/A') return 'N/A';
+            const num = parseInt(traffic);
+            if (isNaN(num)) return 'N/A';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        }
+
+        // Utility function to format price
+        function formatPrice(price) {
+            if (!price || price === 'N/A') return 'N/A';
+            const num = parseFloat(price);
+            if (isNaN(num)) return 'N/A';
+            return '$' + num.toFixed(2);
+        }
+
+        // Utility function to get metric class
+        function getMetricClass(da) {
+            if (da >= 50) return 'high';
+            if (da >= 30) return 'medium';
+            return 'low';
+        }
+
+        // Fetch data from Google Sheets
+        async function fetchData() {
+            try {
+                console.log("Fetching from:", SHEET_URL);
+                const response = await fetch(SHEET_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log("Raw data received:", data);
+                
+                if (!Array.isArray(data) || data.length === 0) {
+                    console.warn("No data received from API");
+                    showError("No data found in Google Sheet. Please check the spreadsheet.");
+                    return;
+                }
+
+                // Normalize all row keys by trimming them (Google Sheets adds spaces)
+                const normalizeRow = (row) => {
+                    const normalized = {};
+                    for (let key in row) {
+                        const trimmedKey = key.trim();
+                        normalized[trimmedKey] = row[key];
+                    }
+                    return normalized;
+                };
+
+                // Normalize all data rows
+                let normalizedData = data.map(normalizeRow);
+
+                // Log column headers to help debug
+                if (normalizedData.length > 0) {
+                    console.log("Column names in Google Sheet:", Object.keys(normalizedData[0]));
+                    console.log("First row sample:", normalizedData[0]);
+                }
+                
+                // Helper function to find field with multiple name variations (case-insensitive)
+                const getField = (row, ...possibleNames) => {
+                    const lowerCaseRow = {};
+                    for (let key in row) {
+                        lowerCaseRow[key.toLowerCase()] = row[key];
+                    }
+                    
+                    for (let name of possibleNames) {
+                        const lowerName = name.toLowerCase();
+                        if (lowerCaseRow[lowerName]) {
+                            return String(lowerCaseRow[lowerName]).trim();
+                        }
+                    }
+                    return '';
+                };
+
+                // Process and validate data with proper cleaning
+                allData = normalizedData.filter(row => {
+                    const websiteUrl = (row["website_url"] || '').trim();
+                    const websiteName = (row["website_name"] || '').trim();
+                    return websiteUrl && websiteName;
+                }).map(row => {
+                    // Parse numeric values properly - handle both string and number inputs
+                    const daValue = parseInt(String(row["da"] || '0').toString().trim());
+                    const drValue = parseInt(String(row["dr"] || '0').toString().trim());
+                    const trafficValue = parseInt(String(row["traffic"] || '0').toString().trim());
+                    
+                    // Parse price - handle numeric extraction from strings
+                    const priceStr = getField(row, "price", "Price per Post", "Monthly Price", "Cost");
+                    const priceMatch = priceStr.match(/\d+\.?\d*/);
+                    const priceValue = priceMatch ? parseFloat(priceMatch[0]) : 0;
+
+                    return {
+                        website_url: (row["website_url"] || '').trim(),
+                        website_name: (row["website_name"] || '').trim(),
+                        da: isNaN(daValue) || daValue < 0 ? 0 : daValue,
+                        dr: isNaN(drValue) || drValue < 0 ? 0 : drValue,
+                        spam_score: getField(row, "spam_score", "Spam Score") || 'N/A',
+                        traffic: isNaN(trafficValue) || trafficValue < 0 ? 0 : trafficValue,
+                        domain_age: getField(row, "domain_age", "Domain Age", "Domain_Age") || 'N/A',
+                        price: isNaN(priceValue) || priceValue <= 0 ? 0 : priceValue,
+                        link_type: getField(row, "dofollow", "link_type", "Link Type", "LinkType", "Link_Type", "Type") || 'N/A',
+                        turnaround: getField(row, "turnaround", "Turn Around", "Turnaround Days") || 'N/A',
+                        category: getField(row, "category", "Post Category") || 'N/A'
+                    };
+                });
+
+                // Log cleaned data
+                console.log("✓ Clean Data:", allData);
+                console.log("✓ Total records loaded:", allData.length);
+                
+                // Sample output
+                if (allData.length > 0) {
+                    console.log("✓ Sample record:", allData[0]);
+                }
+
+                if (allData.length === 0) {
+                    showError("No valid records found. Check column names in Google Sheet.");
+                    return;
+                }
+
+                filteredData = [...allData];
+                populateFilters();
+                renderTable();
+                updateDashboard();
+                updateAnalyticsPanel();
+                updateTop5();
+                updateBundle();
+                loadAnalyticsFromStorage();
+                
+                console.log("✓ Marketplace loaded successfully!");
+            } catch (error) {
+                console.error('❌ Error fetching data:', error);
+                showError(`Error loading data: ${error.message}`);
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            const tbody = document.getElementById('tableBody');
+            if (tbody) {
+                tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 40px; color: #d32f2f; font-weight: bold;">⚠️ ${message}</td></tr>`;
+            }
+            console.error('Error:', message);
+        }
+
+        // Safe DOM update helper
+        function safeUpdate(elementId, property, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element[property] = value;
+            }
+        }
+
+        // Populate filter dropdowns
+        function populateFilters() {
+            const categories = [...new Set(allData.map(row => row.category).filter(c => c && c !== 'N/A'))].sort();
+            const linkTypes = [...new Set(allData.map(row => row.link_type).filter(l => l && l !== 'N/A'))].sort();
+
+            const categorySelect = document.getElementById('categoryFilter');
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                categorySelect.appendChild(option);
+            });
+
+            const linkTypeSelect = document.getElementById('linkTypeFilter');
+            linkTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                linkTypeSelect.appendChild(option);
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const search = document.getElementById('searchFilter').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const minDA = parseInt(document.getElementById('minDA').value) || 0;
+            const maxDA = parseInt(document.getElementById('maxDA').value) || 100;
+            const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+            const linkType = document.getElementById('linkTypeFilter').value;
+
+            filteredData = allData.filter(row => {
+                const matchesSearch = row.website_name.toLowerCase().includes(search);
+                const matchesCategory = !category || row.category === category;
+                const matchesDA = row.da >= minDA && row.da <= maxDA;
+                const matchesPrice = row.price >= minPrice && row.price <= maxPrice;
+                const matchesLinkType = !linkType || row.link_type === linkType;
+                return matchesSearch && matchesCategory && matchesDA && matchesPrice && matchesLinkType;
+            });
+
+            applySorting();
+            renderTable();
+            updateAnalytics();
+        }
+
+        // Apply sorting
+        function applySorting() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            if (sortBy === 'da-asc') {
+                filteredData.sort((a, b) => a.da - b.da);
+            } else if (sortBy === 'da-desc') {
+                filteredData.sort((a, b) => b.da - a.da);
+            } else if (sortBy === 'dr-asc') {
+                filteredData.sort((a, b) => a.dr - b.dr);
+            } else if (sortBy === 'dr-desc') {
+                filteredData.sort((a, b) => b.dr - a.dr);
+            } else if (sortBy === 'traffic-asc') {
+                filteredData.sort((a, b) => a.traffic - b.traffic);
+            } else if (sortBy === 'traffic-desc') {
+                filteredData.sort((a, b) => b.traffic - a.traffic);
+            } else if (sortBy === 'price-asc') {
+                filteredData.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'price-desc') {
+                filteredData.sort((a, b) => b.price - a.price);
+            }
+            
+            renderTable();
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('searchFilter').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('minDA').value = '';
+            document.getElementById('maxDA').value = '';
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('linkTypeFilter').value = '';
+            document.getElementById('sortBy').value = '';
+            filteredData = [...allData];
+            renderTable();
+            updateAnalytics();
+        }
+
+        // Render marketplace table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            if (!tbody) {
+                console.error('Error: tableBody element not found');
+                return;
+            }
+            
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 40px; color: #999;">No listings found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filteredData.map((row, index) => {
+                const inCart = cart.some(item => item.website_url === row.website_url);
+                
+                return `
+                    <tr class="${row.da >= 50 ? 'high-da' : ''}" data-website="${row.website_url}">
+                        <td><a href="${row.website_url}" target="_blank" class="website-name">${row.website_name}</a></td>
+                        <td>${row.category}</td>
+                        <td class="metric ${getMetricClass(row.da)}">${row.da}</td>
+                        <td class="metric ${getMetricClass(row.dr)}">${row.dr}</td>
+                        <td>${row.spam_score}</td>
+                        <td>${row.domain_age}</td>
+                        <td class="metric">${formatTraffic(row.traffic)}</td>
+                        <td class="price">${formatPrice(row.price)}</td>
+                        <td>${row.link_type}</td>
+                        <td>${row.turnaround}</td>
+                        <td><input type="number" class="quantity-input" value="1" min="1" id="qty-${index}"></td>
+                        <td>
+                            ${inCart ? `<button class="cart-btn" style="background: #d32f2f; font-size: 0.7em;" data-action="remove" data-index="${index}">✕ Rem</button>` : `<button class="cart-btn" style="font-size: 0.7em;" data-action="add" data-index="${index}">+ Add</button>`}
+                            <button class="whatsapp-btn" style="font-size: 0.7em;" data-action="whatsapp" data-index="${index}">WA</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Add event listeners to all action buttons
+            attachButtonListeners();
+        }
+
+        // Attach event listeners to action buttons
+        function attachButtonListeners() {
+            // Select all buttons in the table body with data-action attribute
+            document.querySelectorAll('td button[data-action]').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const action = this.getAttribute('data-action');
+                    const index = parseInt(this.getAttribute('data-index'));
+                    
+                    if (action === 'add') {
+                        addToCart(index);
+                    } else if (action === 'remove') {
+                        removeFromCartByIndex(index);
+                    } else if (action === 'whatsapp') {
+                        sendToWhatsApp(index);
+                    }
+                });
+            });
+        }
+
+        // Add to cart
+        function addToCart(index) {
+            try {
+                const row = filteredData[index];
+                if (!row) {
+                    alert('Error: Product not found');
+                    return;
+                }
+                
+                const quantity = parseInt(document.getElementById(`qty-${index}`).value) || 1;
+                
+                if (quantity <= 0) {
+                    alert('Please enter a valid quantity');
+                    return;
+                }
+                
+                const existingItem = cart.find(item => item.website_url === row.website_url);
+                if (existingItem) {
+                    existingItem.quantity += quantity;
+                } else {
+                    cart.push({
+                        ...row,
+                        quantity: quantity,
+                        cartId: Date.now() + Math.random()
+                    });
+                }
+
+                // Track analytics
+                trackAddition(row.website_name, row.price * quantity);
+                updateCart();
+                renderTable();
+                
+                // Show success notification
+                alert(`✓ ${row.website_name} added to cart (Qty: ${quantity})`);
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                alert('Error adding item to cart');
+            }
+        }
+
+        // Remove from cart by index
+        function removeFromCartByIndex(filteredIndex) {
+            try {
+                const row = filteredData[filteredIndex];
+                if (!row) return;
+                
+                cart = cart.filter(item => item.website_url !== row.website_url);
+                updateCart();
+                renderTable();
+                alert(`✓ ${row.website_name} removed from cart`);
+            } catch (error) {
+                console.error('Error removing from cart:', error);
+                alert('Error removing item from cart');
+            }
+        }
+
+        // Update cart display
+        function updateCart() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const cartWhatsappBtn = document.getElementById('cartWhatsappBtn');
+            const cartHeader = document.getElementById('cartHeader');
+            
+            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            // Update cart header
+            if (cartHeader) {
+                cartHeader.textContent = `Cart: ${cart.length} items | Total: ${formatPrice(cartTotal)}`;
+            }
+
+            if (!cartItemsDiv || !checkoutBtn) {
+                console.warn('Warning: Cart elements not found');
+                return;
+            }
+
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<div class="cart-empty">Cart is empty</div>';
+                checkoutBtn.disabled = true;
+                if (cartWhatsappBtn) {
+                    cartWhatsappBtn.style.display = 'none';
+                }
+            } else {
+                cartItemsDiv.innerHTML = cart.map((item, idx) => `
+                    <div class="cart-item">
+                        <div class="cart-item-name">${item.website_name}</div>
+                        <div style="font-size: 0.75em; color: #666; margin: 3px 0;">Category: ${item.category}</div>
+                        <div style="font-size: 0.8em; color: #666; margin: 3px 0;">Qty: ${item.quantity} × ${formatPrice(item.price)}</div>
+                        <div class="cart-item-price">${formatPrice(item.price * item.quantity)}</div>
+                        <button class="cart-item-remove" onclick="removeCartItem(${idx})">✕ Remove</button>
+                    </div>
+                `).join('');
+                checkoutBtn.disabled = false;
+                if (cartWhatsappBtn) {
+                    cartWhatsappBtn.style.display = 'block';
+                }
+            }
+
+            updateCartSummary();
+            updateDashboard();
+            updateAnalytics();
+        }
+
+        // Remove cart item by index
+        function removeCartItem(index) {
+            if (index >= 0 && index < cart.length) {
+                const itemName = cart[index].website_name;
+                cart.splice(index, 1);
+                updateCart();
+                renderTable();
+            }
+        }
+
+        // Remove from cart by URL
+        function removeFromCartByUrl(websiteUrl) {
+            cart = cart.filter(item => item.website_url !== websiteUrl);
+            updateCart();
+            renderTable();
+        }
+
+        // Update cart summary
+        function updateCartSummary() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            safeUpdate('cartTotal', 'textContent', formatPrice(total));
+        }
+
+        // Send single item to WhatsApp
+        function sendToWhatsApp(index) {
+            if (index === undefined || filteredData[index] === undefined) {
+                alert('Error: Invalid website selection');
+                return;
+            }
+            
+            const row = filteredData[index];
+            const quantity = parseInt(document.getElementById(`qty-${index}`).value) || 1;
+            const message = `Hello! I'm interested in guest posting on:\n\n📌 ${row.website_name}\n🔗 ${row.website_url}\n📊 DA: ${row.da}\n📈 Traffic: ${formatTraffic(row.traffic)}\n💰 Price: ${formatPrice(row.price)}\n📝 Quantity: ${quantity}`;
+            const whatsappUrl = `https://wa.me/+923232001130?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Send cart via WhatsApp
+        function sendCartViaWhatsApp() {
+            if (cart.length === 0) return;
+
+            // Sort cart by highest DA first
+            const sortedCart = [...cart].sort((a, b) => b.da - a.da);
+
+            let message = 'Hello, I would like to order:\n\n';
+            
+            sortedCart.forEach((item, idx) => {
+                const itemTotal = item.price * item.quantity;
+                message += `${idx + 1}. ${item.website_name} - ${item.category} - ${formatPrice(item.price)} x ${item.quantity} = ${formatPrice(itemTotal)}\n`;
+            });
+            
+            const total = sortedCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const totalItems = sortedCart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            message += `\nTotal Items: ${totalItems}\n`;
+            message += `Total Price: ${formatPrice(total)}`;
+
+            const whatsappUrl = `https://wa.me/+923232001130?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+            safeUpdate('totalCount', 'textContent', filteredData.length);
+            
+            if (filteredData.length > 0) {
+                const avgDA = Math.round(filteredData.reduce((sum, row) => sum + row.da, 0) / filteredData.length);
+                safeUpdate('avgDA', 'textContent', avgDA);
+
+                const avgTraffic = Math.round(filteredData.reduce((sum, row) => sum + row.traffic, 0) / filteredData.length);
+                safeUpdate('avgTraffic', 'textContent', formatTraffic(avgTraffic));
+            }
+
+            safeUpdate('cartCount', 'textContent', cart.length);
+        }
+
+        // Update analytics panel (market stats)
+        function updateAnalyticsPanel() {
+            const highDACount = filteredData.filter(row => row.da >= 50).length;
+            safeUpdate('highDACount', 'textContent', highDACount);
+
+            const validDomainAges = filteredData
+                .map(row => row.domain_age)
+                .filter(age => age !== 'N/A');
+            safeUpdate('avgDomainAge', 'textContent', validDomainAges.length > 0 
+                ? validDomainAges.slice(0, Math.min(5)).join(', ')
+                : 'N/A');
+
+            const avgSpamScore = filteredData
+                .map(row => row.spam_score)
+                .filter(score => score !== 'N/A');
+            safeUpdate('avgSpamScore', 'textContent', avgSpamScore.length > 0
+                ? avgSpamScore.slice(0, Math.min(5)).join(', ')
+                : 'N/A');
+
+            safeUpdate('totalListings', 'textContent', filteredData.length);
+
+            const avgPrice = filteredData.length > 0
+                ? formatPrice(filteredData.reduce((sum, row) => sum + row.price, 0) / filteredData.length)
+                : '$0.00';
+            safeUpdate('avgPrice', 'textContent', avgPrice);
+
+            safeUpdate('analyticsCartCount', 'textContent', cart.reduce((sum, item) => sum + item.quantity, 0));
+        }
+
+        // Update analytics (was updateAnalytics previously)
+        function updateAnalytics() {
+            updateAnalyticsPanel();
+        }
+
+        // Update top 5 by DA
+        function updateTop5() {
+            const top5 = [...allData]
+                .sort((a, b) => b.da - a.da)
+                .slice(0, 5);
+
+            const top5Panel = document.getElementById('top5Panel');
+            if (top5Panel) {
+                top5Panel.innerHTML = top5.map((row, idx) => `
+                    <div style="margin-bottom: 12px; padding: 12px; background: white; border-radius: 6px; border-left: 3px solid #667eea;">
+                        <div style="font-weight: 600; color: #333; margin-bottom: 5px;">${idx + 1}. ${row.website_name}</div>
+                        <div style="font-size: 0.85em; color: #666; margin-bottom: 8px;">DA: <strong>${row.da}</strong> | Price: ${formatPrice(row.price)}</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <input type="number" class="quantity-input" id="top5-qty-${idx}" value="1" min="1" style="padding: 6px; font-size: 0.8em;">
+                            <button class="cart-btn" onclick="addTop5ToCart(${idx})" style="padding: 6px; font-size: 0.8em;">Add</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            window.top5Data = top5;
+        }
+
+        // Add top 5 item to cart
+        function addTop5ToCart(index) {
+            try {
+                if (!window.top5Data || !window.top5Data[index]) {
+                    alert('Error: Product not found');
+                    return;
+                }
+                
+                const row = window.top5Data[index];
+                const quantity = parseInt(document.getElementById(`top5-qty-${index}`).value) || 1;
+                
+                if (quantity <= 0) {
+                    alert('Please enter a valid quantity');
+                    return;
+                }
+                
+                const existingItem = cart.find(item => item.website_url === row.website_url);
+                if (existingItem) {
+                    existingItem.quantity += quantity;
+                } else {
+                    cart.push({
+                        ...row,
+                        quantity: quantity,
+                        cartId: Date.now() + Math.random()
+                    });
+                }
+
+                // Track analytics
+                trackAddition(row.website_name, row.price * quantity);
+                updateCart();
+                renderTable();
+
+                // Show success
+                alert(`✓ ${row.website_name} added to cart (Qty: ${quantity})`);
+            } catch (error) {
+                console.error('Error adding top 5 to cart:', error);
+                alert('Error adding item to cart');
+            }
+        }
+
+        // Update recommended bundle with quantity inputs
+        function updateBundle() {
+            const bundle = [...allData]
+                .sort((a, b) => b.da - a.da)
+                .slice(0, 5);
+
+            let bundleHTML = '';
+            let totalPrice = 0;
+
+            bundle.forEach((row, index) => {
+                bundleHTML += `
+                    <div style="margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 4px; font-size: 0.9em;">
+                        <div style="margin-bottom: 5px;"><strong>${row.website_name}</strong></div>
+                        <div style="margin-bottom: 8px;">Price: ${formatPrice(row.price)} | DA: ${row.da}</div>
+                        <input type="number" class="quantity-input" id="bundle-qty-${index}" value="1" min="1" style="width: 100%; padding: 6px; border: none; border-radius: 3px; box-sizing: border-box;">
+                    </div>
+                `;
+                totalPrice += row.price;
+            });
+
+            const bundleItems = document.getElementById('bundleItems');
+            if (bundleItems) {
+                bundleItems.innerHTML = bundleHTML;
+            }
+            
+            safeUpdate('bundlePrice', 'textContent', formatPrice(totalPrice));
+            window.recommendedBundle = bundle;
+        }
+
+        // Add entire bundle to cart
+        function addBundleToCart() {
+            try {
+                if (!window.recommendedBundle || window.recommendedBundle.length === 0) {
+                    alert('Bundle not available');
+                    return;
+                }
+
+                let totalBundleValue = 0;
+                let addedCount = 0;
+                
+                window.recommendedBundle.forEach((item, idx) => {
+                    const quantity = parseInt(document.getElementById(`bundle-qty-${idx}`).value) || 1;
+                    
+                    if (quantity > 0) {
+                        const existingItem = cart.find(cartItem => cartItem.website_url === item.website_url);
+                        
+                        if (existingItem) {
+                            existingItem.quantity += quantity;
+                        } else {
+                            cart.push({
+                                ...item,
+                                quantity: quantity,
+                                cartId: Date.now() + Math.random()
+                            });
+                        }
+                        totalBundleValue += item.price * quantity;
+                        addedCount++;
+                    }
+                });
+
+                if (addedCount === 0) {
+                    alert('Please set quantities before adding bundle');
+                    return;
+                }
+
+                // Track analytics
+                trackBundleAddition(totalBundleValue);
+                updateCart();
+                renderTable();
+
+                // Show success notification
+                alert(`✓ Bundle added to cart! (${addedCount} items)`);
+            } catch (error) {
+                console.error('Error adding bundle to cart:', error);
+                alert('Error adding bundle to cart');
+            }
+        }
+
+        // Focus on website in table
+        function focusWebsite(websiteName) {
+            const filtered = allData.filter(row => row.website_name === websiteName);
+            if (filtered.length > 0) {
+                filteredData = filtered;
+                renderTable();
+            }
+        }
+
+        // Checkout
+        function checkout() {
+            alert('Feature coming soon! For now, use WhatsApp to place your order.');
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✓ DOM loaded, initializing marketplace...');
+            initAnalyticsStorage();
+            fetchData();
+        });
+    </script>
+</body>
+</html>
